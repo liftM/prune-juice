@@ -23,6 +23,7 @@ import Distribution.Types.Dependency (Dependency)
 import Distribution.Types.Executable (Executable)
 import Distribution.Types.Library (Library)
 import Distribution.Types.TestSuite (TestSuite)
+import Distribution.Utils.Path (getSymbolicPath)
 import System.Directory (listDirectory)
 import System.FilePath.Posix ((</>), isExtensionOf, takeDirectory, takeFileName)
 import qualified Data.Set as Set
@@ -52,9 +53,9 @@ getDependencyNames ignores = flip Set.difference ignores . Set.fromList . map (T
 getSourceFiles :: FilePath -> Maybe FilePath -> BuildInfo -> IO (Set FilePath)
 getSourceFiles fp mainMay buildInfo = do
   let hsSourceDirs = BuildInfo.hsSourceDirs buildInfo
-  allFiles <- case null hsSourceDirs of
-    True -> Set.filter (flip elem (takeFileName <$> maybeToList mainMay) . takeFileName) <$> listFilesRecursive fp
-    False -> fmap mconcat . for hsSourceDirs $ \dir -> listFilesRecursive $ fp </> dir
+  allFiles <- if null hsSourceDirs
+    then Set.filter (flip elem (takeFileName <$> maybeToList mainMay) . takeFileName) <$> listFilesRecursive fp
+    else fmap mconcat . for hsSourceDirs $ \dir -> listFilesRecursive $ fp </> getSymbolicPath dir
   pure $ Set.filter (\fp2 -> any ($ fp2) [isExtensionOf "hs", isExtensionOf "lhs", isExtensionOf "hs-boot"]) allFiles
 
 -- |Parse a library to compile.

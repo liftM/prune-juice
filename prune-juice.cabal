@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: be4102b742b4daf658ffa856f242cb63b726ef765361fe682fc8e346ff78ef5f
+-- hash: b294299097d72fb70f87a967b2761a4549026f68865ee503d1ade3b396b90deb
 
 name:           prune-juice
 version:        0.6
@@ -72,11 +72,11 @@ library
       ViewPatterns
   ghc-options: -Wall -fwarn-tabs -fwarn-redundant-constraints -Wincomplete-uni-patterns -eventlog
   build-depends:
-      Cabal >=3.4.1 && <3.5
-    , aeson >=1.5.6 && <1.6
+      Cabal >=3.6.2 && <3.7
+    , aeson >=2.0.1 && <2.1
     , base <5.0
     , bytestring >=0.10.12 && <0.11
-    , cabal-install-parsers >=0.4.2 && <0.5
+    , cabal-install-parsers >=0.4.3 && <0.5
     , containers >=0.6.5 && <0.7
     , directory >=1.3.6 && <1.4
     , filepath >=1.4.2 && <1.5
@@ -127,11 +127,11 @@ executable prune-juice
       ViewPatterns
   ghc-options: -Wall -fwarn-tabs -fwarn-redundant-constraints -Wincomplete-uni-patterns -eventlog
   build-depends:
-      Cabal >=3.4.1 && <3.5
-    , aeson >=1.5.6 && <1.6
+      Cabal >=3.6.2 && <3.7
+    , aeson >=2.0.1 && <2.1
     , base <5.0
     , bytestring >=0.10.12 && <0.11
-    , cabal-install-parsers >=0.4.2 && <0.5
+    , cabal-install-parsers >=0.4.3 && <0.5
     , containers >=0.6.5 && <0.7
     , directory >=1.3.6 && <1.4
     , filepath >=1.4.2 && <1.5
@@ -188,11 +188,11 @@ test-suite test
       ViewPatterns
   ghc-options: -Wall -fwarn-tabs -fwarn-redundant-constraints -Wincomplete-uni-patterns -eventlog
   build-depends:
-      Cabal >=3.4.1 && <3.5
-    , aeson >=1.5.6 && <1.6
+      Cabal >=3.6.2 && <3.7
+    , aeson >=2.0.1 && <2.1
     , base <5.0
     , bytestring >=0.10.12 && <0.11
-    , cabal-install-parsers >=0.4.2 && <0.5
+    , cabal-install-parsers >=0.4.3 && <0.5
     , containers >=0.6.5 && <0.7
     , directory >=1.3.6 && <1.4
     , file-embed >=0.0.15 && <0.1
