@@ -10,7 +10,6 @@ any dependency listed in `<package>.cabal` is never imported by a source file in
 ## Usage
 
 ```bash
-$ stack install
 $ prune-juice --help
 Usage: prune-juice [--project-root PROJECT_ROOT] [--no-default-ignore]
                    [--no-ignore-self] [--extra-ignore EXTRA_IGNORE]

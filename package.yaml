@@ -65,7 +65,6 @@ dependencies:
   - yaml ^>= 0.11.7
 
 extra-source-files:
-  - stack.yaml
   - cabal.project
   - prune-juice.cabal
   - test/fixtures/*

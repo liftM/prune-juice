@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 4959395438ab2c9f86035c75e55867b5519693cbbb34e3adde37436b51e6c494
+-- hash: be4102b742b4daf658ffa856f242cb63b726ef765361fe682fc8e346ff78ef5f
 
 name:           prune-juice
 version:        0.6
@@ -19,7 +19,6 @@ license:        MIT
 license-file:   LICENSE
 build-type:     Simple
 extra-source-files:
-    stack.yaml
     cabal.project
     prune-juice.cabal
     test/fixtures/ghc-pkg.txt
