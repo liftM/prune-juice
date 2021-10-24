@@ -4,11 +4,11 @@ import Prelude
 
 import Control.Applicative ((<|>), many, optional)
 import Control.Monad (unless, when)
-import Control.Monad.IO.Class (liftIO)
+import Control.Monad.IO.Class (MonadIO, liftIO)
 import Control.Monad.Logger
   ( LogLevel(LevelDebug, LevelError, LevelInfo), defaultOutput, logInfo, runLoggingT
   )
-import Control.Monad.State (execStateT, put)
+import Control.Monad.State (MonadState, execStateT, put)
 import Data.Foldable (for_, traverse_)
 import Data.Set (Set)
 import Data.Text (Text, pack, unpack)
@@ -112,15 +112,18 @@ main = do
         usedDependencies <- addSelf <$> getCompilableUsedDependencies dependencyByModule compilable
         let (baseUsedDependencies, otherUsedDependencies) = Set.partition (flip Set.member packageBaseDependencies) usedDependencies
             otherUnusedDependencies = Set.difference compilableDependencies otherUsedDependencies
-        unless (Set.null otherUnusedDependencies) $ do
-          liftIO . putStrLn . unpack $ "Some unused dependencies for " <> pack (show compilableType) <> " " <> T.unCompilableName compilableName <> " in package " <> packageName
-          traverse_ (liftIO . putStrLn . unpack . ("  " <>) . T.unDependencyName) $ Set.toList otherUnusedDependencies
-          put $ ExitFailure 1
+            baseUnusedDependencies = Set.difference packageBaseDependencies baseUsedDependencies
+        showUnused otherUnusedDependencies $ "Some unused dependencies for " <> pack (show compilableType) <> " " <> T.unCompilableName compilableName <> " in package " <> packageName
+        showUnused baseUnusedDependencies $ "Some unused base dependencies for " <> pack (show compilableType) <> " " <> T.unCompilableName compilableName <> " in package " <> packageName
         pure baseUsedDependencies
       let baseUnusedDependencies = Set.difference packageBaseDependencies baseUsedDependencies
-      unless (Set.null baseUnusedDependencies) $ do
-        liftIO . putStrLn . unpack $ "Some unused base dependencies for package " <> packageName
-        liftIO . traverse_ (putStrLn . unpack . ("  " <>) . T.unDependencyName) $ Set.toList baseUnusedDependencies
-        put $ ExitFailure 1
+      showUnused baseUnusedDependencies $ "Some unused base dependencies for package " <> packageName
 
   exitWith code
+  where
+    showUnused :: (MonadIO m, MonadState ExitCode m) => Set T.DependencyName -> Text -> m ()
+    showUnused unused header =
+      unless (Set.null unused) $ do
+        liftIO . putStrLn . unpack $ header
+        liftIO . traverse_ (putStrLn . unpack . ("  " <>) . T.unDependencyName) $ Set.toList unused
+        put $ ExitFailure 1
